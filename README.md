@@ -75,3 +75,16 @@
 ```
     /data/xiaoaimqtt &
 ```
+
+
+# 如何编译
+
+## Linux
+   1. 参照：https://www.cnblogs.com/flyinggod/p/9468612.html 配置环境  
+   2. 然后进入目录 make  
+
+## Windows
+   1. 从https://blog.csdn.net/lg1259156776/article/details/52281323 里面下载Windows安装版  
+   2. 安装 MinGW  
+   3. 配置好 make.exe 和 arm-linux-gnueabihf-gcc.exe  
+   4. 然后进入目录 make  
