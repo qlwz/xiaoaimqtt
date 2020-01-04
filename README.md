@@ -25,16 +25,20 @@
 
 ### 黑版小爱 （文件系统可读写）
 1. 现在xiaoaimqtt文件放在 /data下
-2. 添加并编辑该文件/etc/init.d/mico_enable  
+2. 添加并编辑该文件/etc/init.d/mico_enable    
+  
+```
     #!/bin/sh /etc/rc.common  
     START=96  
     start() {  
        /data/xiaoaimqtt &  
     }  
-  
+    
     stop() {  
       kill `ps|grep '/data/xiaoaimqtt'|grep -v grep|awk '{print \$1}'`  
     }  
+```
+
 3. 设置权限在 shell下执行
     chmod a+x /data/xiaoaimqtt  
     chmod a+x /etc/init.d/mico_enable  
@@ -52,13 +56,13 @@
    参照连接完成破解 https://bbs.hassbian.com/forum.php?mod=viewthread&tid=8903
 
    需要把  
-
-
+```
     "test `ps|grep 'sh /data/mico.sh'|grep -v grep|wc -l` -eq 0 && sh /data/mico.sh > /tmp/mico.log 2>&1 &"  
-   换成
-
-
+```
+   换成  
+```
     "test `ps|grep '/data/xiaoaimqtt'|grep -v grep|wc -l` -eq 0 && /data/xiaoaimqtt > /tmp/mico.log 2>&1 &"  
+```
 ### 单片机玩家二
    使用 https://github.com/qlwz/esp 里面的xiaoai固件  
    PCB板：https://github.com/qlwz/esp/tree/master/file/pcb/XiaoAi 
@@ -68,7 +72,6 @@
 ### 修改固件
    参考链接完成破解 https://bbs.hassbian.com/forum.php?mod=viewthread&tid=8754&page=1#pid283801
    最后的 /data/init.sh 文件追加  
-
-
+```
     /data/xiaoaimqtt &
-
+```
