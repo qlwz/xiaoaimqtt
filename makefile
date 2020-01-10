@@ -4,6 +4,13 @@ DIR_SRC=./src
 DIR_BIN=.
 DIR_OBJ=./obj
 DIR_LIB=./lib
+CCFILE=arm-linux-gnueabihf-gcc
+TARGET=xiaoaimqtt
+
+# 下面黑版编译
+#DIR_LIB=./lib.back
+#CCFILE=aarch64-linux-gnu-gcc
+#TARGET=xiaoaimqtt.back
 
 #sources_all := $(shell find . -name "*.c" -o -name "*.cpp" -o -name "*.h")
 #sources_c   := $(filter %.c, $(sources_all))
@@ -25,14 +32,13 @@ SRC=$(sources_c)
 CLRDIR=$(notdir ${SRC})
 OBJ=$(patsubst %.c,${DIR_OBJ}/%.o,$(CLRDIR))
 
-CC =arm-linux-gnueabihf-gcc
-LD =arm-linux-gnueabihf-gcc
+CC=${CCFILE}
+LD=${CCFILE}
 
-LDFLAGS = -v -lgcc -lstdc++ -lm -lc -lgcc_s 
+LDFLAGS = -v -lgcc -lm -lc -lgcc_s 
 
 LDFLAGS += -L${DIR_LIB} -Wl,-rpath,`pwd`/${DIR_LIB}  -lssl -lcrypto
 
-TARGET=xiaoaimqtt
 
 BIN_TARGET=${DIR_BIN}/${TARGET}
 

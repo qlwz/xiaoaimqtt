@@ -24,23 +24,23 @@
 ## 如何安装
 
 ### 黑版小爱 （文件系统可读写）
-1. 现在xiaoaimqtt文件放在 /data下
+1. 下载xiaoaimqtt.back文件放在 /data下
 2. 添加并编辑该文件/etc/init.d/mico_enable    
   
 ```
     #!/bin/sh /etc/rc.common  
     START=96  
     start() {  
-       /data/xiaoaimqtt &  
+       /data/xiaoaimqtt.back &  
     }  
     
     stop() {  
-      kill `ps|grep '/data/xiaoaimqtt'|grep -v grep|awk '{print \$1}'`  
+      kill `ps|grep '/data/xiaoaimqtt.back'|grep -v grep|awk '{print \$1}'`  
     }  
 ```
 
 3. 设置权限在 shell下执行
-    chmod a+x /data/xiaoaimqtt  
+    chmod a+x /data/xiaoaimqtt.back  
     chmod a+x /etc/init.d/mico_enable  
     /etc/init.d/mico_enable enable  
     /etc/init.d/mico_enable start  
@@ -80,11 +80,27 @@
 # 如何编译
 
 ## Linux
+   绿板（makefile默认）  
    1. 参照：https://www.cnblogs.com/flyinggod/p/9468612.html 配置环境  
    2. 然后进入目录 make  
 
+   黑版  
+   请下载 https://www.veryarm.com/aarch64-linux-gnu-gcc 
+
 ## Windows
+   绿板（makefile默认）  
    1. 从https://blog.csdn.net/lg1259156776/article/details/52281323 里面下载Windows安装版  
    2. 安装 MinGW  
    3. 配置好 make.exe 和 arm-linux-gnueabihf-gcc.exe  
    4. 然后进入目录 make  
+
+   黑版  
+   请下载 https://www.veryarm.com/aarch64-linux-gnu-gcc 
+
+## 黑版编译  
+   makefile默认是绿板的，黑版的需要在makefile去掉以下注释  
+```
+#DIR_LIB=./lib.back
+#CCFILE=aarch64-linux-gnu-gcc
+#TARGET=xiaoaimqtt.back
+```
