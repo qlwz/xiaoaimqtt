@@ -8,9 +8,9 @@ CCFILE=arm-linux-gnueabihf-gcc
 TARGET=xiaoaimqtt
 
 # 下面黑版编译
-#DIR_LIB=./lib.back
+#DIR_LIB=./lib.black
 #CCFILE=aarch64-linux-gnu-gcc
-#TARGET=xiaoaimqtt.back
+#TARGET=xiaoaimqtt.black
 
 #sources_all := $(shell find . -name "*.c" -o -name "*.cpp" -o -name "*.h")
 #sources_c   := $(filter %.c, $(sources_all))

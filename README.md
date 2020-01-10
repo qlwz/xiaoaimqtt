@@ -31,16 +31,16 @@
     #!/bin/sh /etc/rc.common  
     START=96  
     start() {  
-       /data/xiaoaimqtt.back &  
+       /data/xiaoaimqtt.black &  
     }  
     
     stop() {  
-      kill `ps|grep '/data/xiaoaimqtt.back'|grep -v grep|awk '{print \$1}'`  
+      kill `ps|grep '/data/xiaoaimqtt.black'|grep -v grep|awk '{print \$1}'`  
     }  
 ```
 
 3. 设置权限在 shell下执行
-    chmod a+x /data/xiaoaimqtt.back  
+    chmod a+x /data/xiaoaimqtt.black  
     chmod a+x /etc/init.d/mico_enable  
     /etc/init.d/mico_enable enable  
     /etc/init.d/mico_enable start  
