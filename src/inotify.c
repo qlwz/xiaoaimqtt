@@ -40,7 +40,7 @@ int doW()
     char *resBuffer = NULL, *asrBuffer = NULL;
 
     resBuffer = readFile("/tmp/mipns/mibrain/mibrain_txt_RESULT_NLP.log");
-    if (resBuffer == NULL)
+    if (resBuffer == NULL || strlen(resBuffer) == 0)
     {
         return -1;
     }
@@ -89,7 +89,7 @@ int doW()
     uint8_t result;
     size_t i;
     // 若干循环,直到成功一次直接跳出
-    for (i = 0; i < 200; i++)
+    for (i = 0; i < 300; i++)
     {
         result = playerPlayOperation(strcmp(domain, "scenes") == 0 ? "stop" : "resume");
         if (result == 0)
@@ -97,7 +97,7 @@ int doW()
             printf("== 停止成功\n");
             break;
         }
-        usleep(50);
+        usleep(10);
     }
 
     doStatus();
@@ -118,9 +118,16 @@ int doW()
     url_encode(&mb, resBuffer);
     mbuf_append(&mb, "&asr=", 5);
     url_encode(&mb, asrBuffer);
+    mb.buf[mb.len] = '\0';
 
     DEL(resBuffer);
     DEL(asrBuffer);
+    
+    if (playStatus == 1)
+    {
+        shellcmdNoResult("mphelper pause > /dev/null 2>&1");
+    }
+
     // 转发asr和res给服务端接口,远端可以处理控制逻辑完成后返回需要播报的TTS文本
     // 2秒连接超时,4秒传输超时
 
@@ -133,19 +140,13 @@ int doW()
         // 如果远端返回内容不为空则用TTS播报之
         if (strlen(state->data) > 0 && strlen(state->data) < 450)
         {
-            if (playStatus == 1)
-            {
-                shellcmdNoResult("mphelper pause > /dev/null 2>&1");
-                usleep(200 * 1000);
-            }
-
             printf("== 播报TTS | TTS内容: %s\n", state->data);
             char resBuf[512];
             sprintf(resBuf, "ubus call mibrain text_to_speech \"{\\\"text\\\":\\\"%s\\\",\\\"save\\\":0}\" > /dev/null 2>&1", state->data);
             shellcmdNoResult(resBuf);
-            usleep(200 * 1000);
+            //usleep(200 * 1000);
             // 最长20秒TTS播报时间,20秒内如果播报完成跳出
-            for (i = 0; i < 20; i++)
+            for (i = 0; i < 100; i++)
             {
                 doStatus();
                 if (lastPlayerType != 1)
@@ -153,18 +154,18 @@ int doW()
                     printf("== 播报TTS结束\n");
                     break;
                 }
-                usleep(1000 * 1000);
-            }
-
-            //如果之前音乐是播放的则接着播放
-            if (playStatus == 1)
-            {
-                //这里延迟一秒是因为前面处理如果太快,可能引起恢复播放不成功
-                usleep(1000 * 1000);
-                printf("== 继续播放音乐\n");
-                shellcmdNoResult("mphelper play > /dev/null 2>&1");
+                usleep(200 * 1000);
             }
         }
+    }
+
+    //如果之前音乐是播放的则接着播放
+    if (playStatus == 1)
+    {
+        //这里延迟一秒是因为前面处理如果太快,可能引起恢复播放不成功
+        usleep(500 * 1000);
+        printf("== 继续播放音乐\n");
+        shellcmdNoResult("mphelper play > /dev/null 2>&1");
     }
     DEL(state->data);
     DEL(state);

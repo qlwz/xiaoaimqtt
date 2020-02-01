@@ -7,7 +7,7 @@
 #include <string.h>
 #include "cJSON.h"
 
-#define VERSION "2020.01.04.1100"
+#define VERSION "2020.02.01.2000"
 
 extern char httpPrefix[100];
 extern char xiaoaiSN[20];
